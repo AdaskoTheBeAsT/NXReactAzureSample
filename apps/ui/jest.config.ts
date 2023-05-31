@@ -1,5 +1,5 @@
 /* eslint-disable */
-const reportPath = './.reports/apps/ui/';
+const reportPath = './coverage/apps/ui';
 export default {
   displayName: 'ui',
   preset: '../../jest.preset.js',
@@ -9,17 +9,17 @@ export default {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   collectCoverage: true,
-  coverageDirectory: `../../${reportPath}coverage`,
+  coverageDirectory: `../../${reportPath}`,
   coverageReporters: ['cobertura', 'html', 'lcov'],
   reporters: [
     'default',
     [
       'jest-stare',
       {
-        resultDir: reportPath,
+        resultDir: `${reportPath}/`,
         reportTitle: 'Frontend test',
         additionalResultsProcessors: [],
-        coverageLink: 'coverage/index.html',
+        coverageLink: 'index.html',
         resultJson: 'frontend.stare.json',
         resultHtml: 'frontend.stare.html',
         report: true,
@@ -29,7 +29,7 @@ export default {
     [
       'jest-html-reporters',
       {
-        publicPath: reportPath,
+        publicPath: `${reportPath}/`,
         filename: 'frontend-test-report.html',
         pageTitle: 'Frontend test',
         expand: true,
@@ -38,7 +38,7 @@ export default {
     [
       'jest-xunit',
       {
-        outputPath: reportPath,
+        outputPath: `${reportPath}/`,
         filename: 'frontend-test-report.xunit.xml',
         traitsRegex: [
           { regex: /\(Test Type:([^,)]+)(,|\)).*/g, name: 'Category' },
@@ -49,20 +49,20 @@ export default {
     [
       'jest-sonar',
       {
-        outputDirectory: reportPath,
+        outputDirectory: `${reportPath}/`,
         outputName: 'frontend-test.sonar.xml',
       },
     ],
     [
       'jest-trx-results-processor',
       {
-        outputFile: `${reportPath}frontend-test.trx`,
+        outputFile: `${reportPath}/frontend-test.trx`,
       },
     ],
     [
       'jest-junit',
       {
-        outputDirectory: reportPath,
+        outputDirectory: `${reportPath}/`,
         outputName: 'frontend-test.junit.xml',
       },
     ],

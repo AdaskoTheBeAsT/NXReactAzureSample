@@ -1,16 +1,48 @@
-import styled from '@emotion/styled';
+import { InteractionType } from '@azure/msal-browser';
+import { MsalAuthenticationTemplate, MsalProvider } from '@azure/msal-react';
+import { Provider } from 'react-redux';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-import NxWelcome from './nx-welcome';
+import { Login } from './Login';
+import { Logout } from './Logout';
+import { msalInstance } from './msal-config';
+import { store } from './store';
+import { Temperature, fetchTemperature } from './Temperature';
 
-const StyledApp = styled.div`
-  // Your style here
-`;
+const authRequest = {
+  scopes: ['api://6d524fad-04a9-4ab4-a6ba-26d062facca6/access_as_user'],
+};
 
-export function App() {
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Login />,
+  },
+  {
+    path: '/logout',
+    element: <Logout />,
+  },
+  {
+    path: '/temperature',
+    element: (
+      <MsalAuthenticationTemplate
+        interactionType={InteractionType.Popup}
+        authenticationRequest={authRequest}
+      >
+        <Temperature />
+      </MsalAuthenticationTemplate>
+    ),
+    loader: fetchTemperature,
+  },
+]);
+
+function App() {
   return (
-    <StyledApp>
-      <NxWelcome title="ui" />
-    </StyledApp>
+    <MsalProvider instance={msalInstance}>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </MsalProvider>
   );
 }
 
