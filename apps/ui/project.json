@@ -94,6 +94,20 @@
       "options": {
         "lintFilePatterns": ["apps/ui/**/*.css"]
       }
+    },
+    "sonar": {
+      "executor": "@koliveira15/nx-sonarqube:scan",
+      "options": {
+        "name": "ui",
+        "hostUrl": "https://sonarcloud.io",
+        "projectKey": "NXReactAzureSample",
+        "skipTargetDefaults": false,
+        "branches": false,
+        "qualityGate": true,
+        "qualityGateTimeout": "300",
+        "skipImplicitDeps": false,
+        "organization": "adaskothebeast-github"
+      }
     }
   },
   "tags": []
