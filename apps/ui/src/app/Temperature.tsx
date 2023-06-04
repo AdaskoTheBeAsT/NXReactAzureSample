@@ -7,7 +7,7 @@ import {
 import { useQuery } from 'react-query';
 
 export const fetchTemperature = async (accessToken: string) => {
-  const response = await fetch('https://api.example.com/temperature', {
+  const response = await fetch('/api/temperature', {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
@@ -27,7 +27,7 @@ export const Temperature = () => {
   const { isLoading, error, data } = useQuery('temperature', async () => {
     if (account) {
       const response = await instance.acquireTokenSilent({
-        scopes: ['api_scope'],
+        scopes: [process.env.NX_APP_AZURE_SCOPE ?? ''],
         account: account,
       });
 

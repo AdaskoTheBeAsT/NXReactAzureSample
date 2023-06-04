@@ -2,10 +2,14 @@ import { Configuration, PublicClientApplication } from '@azure/msal-browser';
 
 const msalConfig: Configuration = {
   auth: {
-    clientId: '3db32ac8-a13f-4d4a-9f24-a553af37fffa',
-    authority:
-      'https://login.microsoftonline.com/dd03cb2c-9814-43b1-97eb-1c82137c57ac',
+    clientId: process.env.NX_APP_AZURE_CLIENT_ID ?? '',
+    authority: `https://login.microsoftonline.com/${process.env.NX_APP_AZURE_TENANT_ID}`,
     redirectUri: 'http://localhost:4200/',
+  },
+  system: {
+    loggerOptions: {
+      piiLoggingEnabled: false,
+    },
   },
 };
 

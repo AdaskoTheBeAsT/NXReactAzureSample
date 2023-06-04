@@ -5,7 +5,7 @@ export const Login = () => {
 
   const handleLogin = () => {
     instance
-      .loginPopup()
+      .loginRedirect()
       .then((response) => {
         // Handle login response
       })

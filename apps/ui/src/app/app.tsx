@@ -1,21 +1,41 @@
 import { InteractionType } from '@azure/msal-browser';
 import { MsalAuthenticationTemplate, MsalProvider } from '@azure/msal-react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { Provider } from 'react-redux';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Link, RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { Login } from './Login';
 import { Logout } from './Logout';
 import { msalInstance } from './msal-config';
 import { store } from './store';
-import { Temperature, fetchTemperature } from './Temperature';
+import { Temperature } from './Temperature';
 
 const authRequest = {
-  scopes: ['api://6d524fad-04a9-4ab4-a6ba-26d062facca6/access_as_user'],
+  scopes: [process.env.NX_APP_AZURE_SCOPE ?? ''],
 };
 
 const router = createBrowserRouter([
   {
     path: '/',
+    element: (
+      <>
+        <div>
+          <h1>Login</h1>
+          <Link to="login">Login</Link>
+        </div>
+        <div>
+          <h1>Logout</h1>
+          <Link to="logout">Logout</Link>
+        </div>
+        <div>
+          <h1>Temperature</h1>
+          <Link to="temperature">Temperature</Link>
+        </div>
+      </>
+    ),
+  },
+  {
+    path: '/login',
     element: <Login />,
   },
   {
@@ -26,21 +46,24 @@ const router = createBrowserRouter([
     path: '/temperature',
     element: (
       <MsalAuthenticationTemplate
-        interactionType={InteractionType.Popup}
+        interactionType={InteractionType.Redirect}
         authenticationRequest={authRequest}
       >
         <Temperature />
       </MsalAuthenticationTemplate>
     ),
-    loader: fetchTemperature,
   },
 ]);
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <MsalProvider instance={msalInstance}>
       <Provider store={store}>
-        <RouterProvider router={router} />
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
       </Provider>
     </MsalProvider>
   );
